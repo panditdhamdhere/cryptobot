@@ -28,40 +28,68 @@ const Signup = ({ axios, setActiveComponent, notifyError, notifySuccess }) => {
 
     try {
       // api call
-    } catch (error) {}
+      const response = await axios({
+        method: "POST",
+        url: `/api/v1/user/signup`,
+        withCredentials: true,
+        data: {
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          passwordConfirm: user.passwordConfirm,
+        },
+      });
+
+      if (response.data.status == "success") {
+        notifySuccess("Account Created Successfully");
+        localStorage.setItem(
+          "USER_MEMBERSHIP",
+          response.data.data.membershipType
+        );
+        localStorage.setItem("CryptoBot_BackEnd", response.data.data.user._id);
+        localStorage.setItem("CRYPTO_AUTH_TOKEN", response.data.data.token);
+        window.location.reload();
+      } else {
+        notifyError("Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // console.log(user);
   return (
     <div className="techwave_fn_sign">
-      <div className="sign_content">
+      <div className="sign__content">
         <h1 className="logo">Design by Pandit</h1>
         <form className="login">
-          <div className="form_content">
-            <div className="form_title">Sign Up</div>
-            <div className="form_username">
-              <label htmlFor="user_login">Name</label>
+          <div className="form__content">
+            <div className="form__title">Sign Up</div>
+            <div className="form__username">
+              <label htmlFor="user__login">Name</label>
               <input
                 type="text"
                 className="input"
                 onChange={(e) => handleChange("name", e)}
               />
             </div>
-            <div className="form_username">
-              <label htmlFor="user_login">Email</label>
+            <div className="form__username">
+              <label htmlFor="user__login">Email</label>
               <input
                 type="text"
                 className="input"
                 onChange={(e) => handleChange("email", e)}
               />
             </div>
-            <div className="form_username">
-              <label htmlFor="user_login">Password</label>
+            <div className="form__username">
+              <label htmlFor="user__login">Password</label>
               <input
                 type="text"
                 className="input"
                 onChange={(e) => handleChange("password", e)}
               />
             </div>
-            <div className="form_username">
+            <div className="form__username">
               <label htmlFor="user_login">Confirm Password</label>
               <input
                 type="text"
@@ -69,8 +97,24 @@ const Signup = ({ axios, setActiveComponent, notifyError, notifySuccess }) => {
                 onChange={(e) => handleChange("passwordConfirm", e)}
               />
             </div>
+
+            <div className="form_alternative">
+              <a
+                onClick={(e) => createAccount(e)}
+                className="techwave_fn_button"
+              >
+                <span className="">Create Account</span>
+              </a>
+            </div>
           </div>
         </form>
+
+        <div className="sign__desc">
+          <p>
+            Not a Member ?
+            <a onClick={() => setActiveComponent("Login")}>Login</a>
+          </p>
+        </div>
       </div>
     </div>
   );
