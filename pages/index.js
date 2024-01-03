@@ -30,10 +30,32 @@ import {
 import { CONTEXT } from "../context/context";
 const index = () => {
   const { TRADING_BOT } = useContext(CONTEXT);
+
+  // state variables
+  const [activeComponent, setActiveComponent] = useState("Signup");
+  const [membershipType, setMembershipType] = useState("premium");
+  const [authBackEndID, setAuthBackEndID] = useState("");
+  const [networks, setNetworks] = useState({});
+  const [networkName, setNetworkName] = useState();
+
+  // notification
+  const notifyError = (message) => toast.error(message, { duration: 3000 });
+  const notifySuccess = (message) => toast.success(message, { duration: 3000 });
+
   return (
     <div>
       <MovingSubmenu />
-      <Preloader />
+      {/* <Preloader /> */}
+      {
+        activeComponent == "Signup" ? (
+          <Signup axios={axios} setActiveComponent={setActiveComponent} 
+          notifyError={notifyError}
+          notifySuccess={notifySuccess}
+          />
+        ) : (
+          "HOME"
+        )
+      }
     </div>
   );
 };
