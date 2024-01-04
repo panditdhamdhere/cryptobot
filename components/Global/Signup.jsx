@@ -44,10 +44,10 @@ const Signup = ({ axios, setActiveComponent, notifyError, notifySuccess }) => {
         notifySuccess("Account Created Successfully");
         localStorage.setItem(
           "USER_MEMBERSHIP",
-          response.data.data.membershipType
+          response.data.data.user.membershipType
         );
         localStorage.setItem("CryptoBot_BackEnd", response.data.data.user._id);
-        localStorage.setItem("CRYPTO_AUTH_TOKEN", response.data.data.token);
+        localStorage.setItem("CRYPTO_AUTH_TOKEN", response.data.token);
         window.location.reload();
       } else {
         notifyError("Something went wrong");
