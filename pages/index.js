@@ -32,7 +32,7 @@ const index = () => {
   const { TRADING_BOT } = useContext(CONTEXT);
 
   // state variables
-  const [activeComponent, setActiveComponent] = useState("Signup");
+  const [activeComponent, setActiveComponent] = useState("Home");
   const [membershipType, setMembershipType] = useState("premium");
   const [authBackEndID, setAuthBackEndID] = useState("");
   const [networks, setNetworks] = useState({});
@@ -46,16 +46,56 @@ const index = () => {
     <div>
       <MovingSubmenu />
       {/* <Preloader /> */}
-      {
-        activeComponent == "Signup" ? (
-          <Signup axios={axios} setActiveComponent={setActiveComponent} 
+      {activeComponent == "Signup" ? (
+        <Signup
+          axios={axios}
+          setActiveComponent={setActiveComponent}
           notifyError={notifyError}
           notifySuccess={notifySuccess}
-          />
-        ) : (
-          "HOME"
-        )
-      }
+        />
+      ) : (
+        <div className="techwave_fn_wrapper">
+          <div className="techwave_fn_wrap">
+            <Search />
+            <Header
+              networkName={networkName}
+              setActiveComponent={setActiveComponent}
+            />
+            <SideBar setActiveComponent={setActiveComponent} />
+
+            {activeComponent == "Home" ? (
+              <Home />
+            ) : activeComponent == "Trade Tokens" ? (
+              <TradeTokens />
+            ) : activeComponent == "Top Exchange Tokens" ? (
+              <TopExchangeTokens />
+            ) : activeComponent == "Networks" ? (
+              <Networks
+                networkName={networkName}
+                setNetworkName={setNetworkName}
+              />
+            ) : activeComponent == "Trading" ? (
+              <Trading axios={axios} trading={trading} />
+            ) : activeComponent == "Pricing" ? (
+              <Price />
+            ) : activeComponent == "Profile" ? (
+              <Profile setActiveComponent={setActiveComponent} />
+            ) : activeComponent == "Setting" ? (
+              <Setting />
+            ) : activeComponent == "Add Token Pair" ? (
+              <AddTokenPair />
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeComponent == "Login" ? (
+        <Login setActiveComponent={setActiveComponent} axios={axios} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
